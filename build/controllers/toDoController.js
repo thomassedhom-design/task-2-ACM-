@@ -8,20 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toDoController = void 0;
-const toDoService_1 = require("../services/toDoService");
+const todo_1 = __importDefault(require("../models/todo"));
 exports.toDoController = {
     getAllTasks: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, toDoService_1.collectAllData)();
-        res.send(toDoService_1.displayAllTasksData);
+        const Data = yield todo_1.default.find();
+        res.json(Data);
     }),
-    postNewTask: (req, res) => {
-        toDoService_1.toDoData.push(req.body);
-        res.send(req.body);
-    },
+    postNewTask: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { Title, Description, createdBy } = req.body;
+        const saveData = yield todo_1.default.create({ Title, Description, createdBy });
+        res.send(saveData);
+    }),
     getSpecificTask: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, toDoService_1.collectTasktData)(req.params.userId);
-        res.send(toDoService_1.displayTask);
+        const userId = req.params.createdBy;
+        const SpecificTask = yield todo_1.default.find({ createdBy: userId });
+        res.json(SpecificTask);
     })
 };

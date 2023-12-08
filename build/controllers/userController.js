@@ -8,20 +8,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.userController = void 0;
-const userService_1 = require("../services/userService");
+const User_1 = __importDefault(require("../models/User"));
 exports.userController = {
     getAllUsers: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, userService_1.collectAllData)();
-        res.send(userService_1.displayAllUsersData);
+        const Data = yield User_1.default.find();
+        res.json(Data);
     }),
-    postNewUser: (req, res) => {
-        userService_1.usersData.push(req.body);
-        res.send(req.body);
-    },
+    postNewUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        const { name, email, phonNnumber } = req.body;
+        const saveData = yield User_1.default.create({ name, email, phonNnumber });
+        res.send(saveData);
+    }),
     getSpecificUser: (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        yield (0, userService_1.collectUsertData)(req.params.userId);
-        res.send(userService_1.displayUserData);
+        const userId = req.params.userId;
+        const SpecificUser = yield User_1.default.findById(userId);
+        res.json(SpecificUser);
     })
 };

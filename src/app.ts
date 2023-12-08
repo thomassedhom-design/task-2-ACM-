@@ -2,7 +2,14 @@ import express from "express";
 require("dotenv").config()
 import userRouter from "./routes/userRoutes"
 import toDoRouter from "./routes/toDoRoutes"
+import mongoose from "mongoose"
 let app = express();
+
+const url: any = process.env.DATABSE_URL;
+
+mongoose.connect(url)
+    .then(() => console.log("connect"))
+    .catch(() => console.log("not connect"))
 
 app.use(express.json())
 

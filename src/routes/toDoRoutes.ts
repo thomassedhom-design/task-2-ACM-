@@ -10,7 +10,7 @@ toDoRouter.route("/")
     .get(toDoController.getAllTasks)
     .post(toDoController.postNewTask)
 
-toDoRouter.route("/:userId")
+toDoRouter.route("/:createdBy")
     .get(toDoController.getSpecificTask)
 
 export default toDoRouter

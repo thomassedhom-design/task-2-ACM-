@@ -1,26 +1,30 @@
 import { Request, Response } from "express";
 import {usersData,displayAllUsersData,collectAllData,displayUserData,collectUsertData} 
     from "../services/userService";
+    import UserCollection from "../models/User"
 
 export let userController = {
 
     getAllUsers:async (req: Request, res: Response) => {
 
-        await collectAllData()
-
-        res.send(displayAllUsersData);
+        const Data = await UserCollection.find();
+        res.json(Data);
     },
 
-    postNewUser: (req: Request, res: Response) =>{
+    postNewUser: async (req: Request, res: Response) => {
 
-        usersData.push(req.body); 
-        res.send(req.body)
+        const {name, email, phonNnumber} =  req.body;
+    
+        const saveData = await UserCollection.create({name, email, phonNnumber});
+    
+        res.send(saveData)
     },
 
     getSpecificUser:async (req: Request, res: Response) => {
 
-        await collectUsertData(req.params.userId) 
-
-        res.send(displayUserData);
+        const userId = req.params.userId;
+    
+        const SpecificUser = await UserCollection.findById(userId);
+        res.json(SpecificUser)
     }
 }

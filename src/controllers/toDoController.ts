@@ -1,24 +1,32 @@
-import express, {Request, Response, json} from "express";
-import {toDoData, displayAllTasksData, collectAllData, displayTask, collectTasktData}
-        from "../services/toDoService";
+import express, { Request, Response, json } from "express";
+import { toDoData, displayAllTasksData, collectAllData, displayTask, collectTasktData }
+  from "../services/toDoService";
+
+import toDoCollection from "../models/todo"
+
 
 export let toDoController = {
 
-    getAllTasks: async (req: Request, res: Response) => {
+  getAllTasks: async (req: Request, res: Response) => {
 
-        await collectAllData();
-        res.send(displayAllTasksData);
-    },
+    const Data = await toDoCollection.find();
+    res.json(Data);
+  },
 
-    postNewTask: (req: Request, res: Response) =>{
+  postNewTask: async (req: Request, res: Response) => {
 
-        toDoData.push(req.body); 
-        res.send(req.body)
-    },
+    const {Title, Description, createdBy} =  req.body;
 
-    getSpecificTask:async (req: Request, res: Response) => {
+    const saveData = await toDoCollection.create({Title, Description, createdBy});
 
-        await collectTasktData(req.params.userId);
-        res.send(displayTask)
-    }
+    res.send(saveData)
+  },
+
+  getSpecificTask: async (req: Request, res: Response) => {
+
+    const userId: String = req.params.createdBy;
+
+    const SpecificTask = await toDoCollection.find({createdBy: userId});
+    res.json(SpecificTask)
+  }
 }

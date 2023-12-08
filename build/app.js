@@ -7,7 +7,12 @@ const express_1 = __importDefault(require("express"));
 require("dotenv").config();
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const toDoRoutes_1 = __importDefault(require("./routes/toDoRoutes"));
+const mongoose_1 = __importDefault(require("mongoose"));
 let app = (0, express_1.default)();
+const url = process.env.DATABSE_URL;
+mongoose_1.default.connect(url)
+    .then(() => console.log("connect"))
+    .catch(() => console.log("not connect"));
 app.use(express_1.default.json());
 app.use("/users", userRoutes_1.default);
 app.use("/todo", toDoRoutes_1.default);

@@ -10,6 +10,6 @@ app.use(express_1.default.json());
 toDoRouter.route("/")
     .get(toDoController_1.toDoController.getAllTasks)
     .post(toDoController_1.toDoController.postNewTask);
-toDoRouter.route("/:userId")
+toDoRouter.route("/:createdBy")
     .get(toDoController_1.toDoController.getSpecificTask);
 exports.default = toDoRouter;
